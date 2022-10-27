@@ -8,7 +8,8 @@
     "index.d.ts"
   ],
   "scripts": {
-    "test": "tsd"
+    "test": "tsd",
+    "ci": "npm test"
   },
   "repository": {
     "type": "git",
