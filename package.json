@@ -1,0 +1,35 @@
+{
+  "name": "oss-interface",
+  "version": "0.0.1",
+  "description": "OSS Client interface",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "files": [
+    "index.d.ts"
+  ],
+  "scripts": {
+    "test": "tsd"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/node-modules/oss-interface.git"
+  },
+  "keywords": [
+    "oss"
+  ],
+  "author": "fengmk2",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/node-modules/oss-interface/issues"
+  },
+  "homepage": "https://github.com/node-modules/oss-interface#readme",
+  "devDependencies": {
+    "@types/node": "^18.11.7",
+    "egg-ci": "^2.1.0",
+    "tsd": "^0.24.1"
+  },
+  "ci": {
+    "version": "16, 18",
+    "os": "linux"
+  }
+}
