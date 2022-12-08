@@ -1,4 +1,10 @@
 
+1.1.0 / 2022-12-08
+==================
+
+**features**
+  * [[`d301bce`](http://github.com/node-modules/oss-interface/commit/d301bce563b8c5342d9280fe75c25cc108acfa4b)] - feat: add asyncSignatureUrl typing (#3) (killa <<killa123@126.com>>)
+
 1.0.1 / 2022-10-27
 ==================
 
