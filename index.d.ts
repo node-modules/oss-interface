@@ -168,6 +168,33 @@ export interface CopyAndPutMetaResult {
   res: NormalSuccessResponse;
 }
 
+export type HTTPMethods = 'GET' | 'POST' | 'DELETE' | 'PUT';
+
+export interface ResponseHeaderType {
+  'content-type'?: string | undefined;
+  'content-disposition'?: string | undefined;
+  'cache-control'?: string | undefined;
+}
+
+export interface SignatureUrlOptions {
+  /** after expires seconds, the url will become invalid, default is 1800 */
+  expires?: number | undefined;
+  /** the HTTP method, default is 'GET' */
+  method?: HTTPMethods | undefined;
+  /** set the request content type */
+  'Content-Type'?: string | undefined;
+  /**  image process params, will send with x-oss-process e.g.: {process: 'image/resize,w_200'} */
+  process?: string | undefined;
+  /** traffic limit, range: 819200~838860800 */
+  trafficLimit?: number | undefined;
+  /** additional signature parameters in url */
+  subResource?: object | undefined;
+  /** set the response headers for download */
+  response?: ResponseHeaderType | undefined;
+  /** set the callback for the operation */
+  callback?: ObjectCallback | undefined;
+}
+
 // Object Simple Interface
 export interface IObjectSimple {
   /** Object base operations */
@@ -207,4 +234,11 @@ export interface IObjectSimple {
    */
   copy(name: string, sourceName: string, options?: CopyObjectOptions): Promise<CopyAndPutMetaResult>;
   copy(name: string, sourceName: string, sourceBucket: string, options?: CopyObjectOptions): Promise<CopyAndPutMetaResult>;
+
+  /**
+   * Signature a url for the object.
+   * @param name
+   * @param options
+   */
+  asyncSignatureUrl(name: string, options?: SignatureUrlOptions): Promise<string>;
 }
