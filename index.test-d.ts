@@ -15,7 +15,7 @@ import {
   GetStreamOptions,
   GetStreamResult,
   CopyObjectOptions,
-  CopyAndPutMetaResult,
+  CopyAndPutMetaResult, SignatureUrlOptions,
 } from '.';
 
 const getObjectOptions = {} as GetObjectOptions;
@@ -55,6 +55,11 @@ class SimpleClient implements IObjectSimple {
   async copy(name: string, sourceName: string, sourceBucket?: string | CopyObjectOptions, options?: CopyObjectOptions): Promise<CopyAndPutMetaResult> {
     console.log(name, sourceName, sourceBucket, options);
     return {} as any;
+  }
+
+  async asyncSignatureUrl(name: string, options?: SignatureUrlOptions): Promise<string> {
+    console.log(name, options);
+    return '';
   }
 }
 
