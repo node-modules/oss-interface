@@ -8,6 +8,7 @@
     "index.d.ts"
   ],
   "scripts": {
+    "lint": "echo 'ignore'",
     "test": "tsd",
     "ci": "npm test"
   },
@@ -26,11 +27,6 @@
   "homepage": "https://github.com/node-modules/oss-interface#readme",
   "devDependencies": {
     "@types/node": "^18.11.7",
-    "egg-ci": "^2.1.0",
     "tsd": "^0.24.1"
-  },
-  "ci": {
-    "version": "16, 18",
-    "os": "linux"
   }
 }
