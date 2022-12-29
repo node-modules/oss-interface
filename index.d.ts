@@ -152,8 +152,7 @@ export interface GetStreamOptions {
 }
 
 export interface GetStreamResult {
-  /** readable stream instance if response status is not 200, stream will be null. */
-  stream?: Readable;
+  stream: Readable;
   res: NormalSuccessResponse;
 }
 
