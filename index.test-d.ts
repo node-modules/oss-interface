@@ -65,3 +65,7 @@ class SimpleClient implements IObjectSimple {
 
 const simpleClient = new SimpleClient();
 expectType<Promise<GetObjectResult>>(simpleClient.get('foo'));
+
+const result = await simpleClient.getStream('foo');
+expectType<Readable>(result.stream);
+expectType<number>(result.res.status);
