@@ -33,8 +33,7 @@ export interface NormalSuccessResponse {
   /** response status */
   status: number;
   /** response headers */
-  /** todo the object in detail */
-  headers: object;
+  headers: Record<string, string>;
   /** response size */
   size: number;
   /**  request total use time (ms) */

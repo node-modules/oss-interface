@@ -69,3 +69,4 @@ expectType<Promise<GetObjectResult>>(simpleClient.get('foo'));
 const result = await simpleClient.getStream('foo');
 expectType<Readable>(result.stream);
 expectType<number>(result.res.status);
+expectType<string>(result.res.headers.etag);
