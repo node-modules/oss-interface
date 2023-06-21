@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/node-modules/oss-interface/compare/v1.1.1...v1.1.2) (2023-06-21)
+
+
+### Bug Fixes
+
+* response headers should be Record ([#5](https://github.com/node-modules/oss-interface/issues/5)) ([b95c5b2](https://github.com/node-modules/oss-interface/commit/b95c5b2c00b5c2b518f82f2cddde12bc72b0edaf))
+
 ## [1.1.1](https://github.com/node-modules/oss-interface/compare/v1.1.0...v1.1.1) (2022-12-29)
 
 
@@ -29,4 +36,3 @@
   * [[`d730c8d`](http://github.com/node-modules/oss-interface/commit/d730c8d37d77fac70e8022804fbadcf9b97fe3b3)] - 📦 NEW: Add d.ts and IObjectSimple Client define (#1) (fengmk2 <<fengmk2@gmail.com>>),fatal: No names found, cannot describe anything.
 
 **others**
-
