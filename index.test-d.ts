@@ -32,7 +32,16 @@ class SimpleClient implements IObjectSimple {
   }
   async head(name: string, options?: HeadObjectOptions): Promise<HeadObjectResult> {
     console.log(name, options);
-    return {} as any;
+    return {
+      status: 200,
+      res: {
+        status: 200,
+        headers: {},
+        size: 0,
+        rt: 0,
+      },
+      meta: {},
+    };
   }
 
   async get(name: string, options?: GetObjectOptions): Promise<GetObjectResult>;
