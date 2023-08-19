@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.3](https://github.com/node-modules/oss-interface/compare/v1.1.2...v1.1.3) (2023-08-19)
+
+
+### Bug Fixes
+
+* ignore uid and pid define on UserMeta ([#6](https://github.com/node-modules/oss-interface/issues/6)) ([fba04c7](https://github.com/node-modules/oss-interface/commit/fba04c73cae96f7baa82d7fd0ba7b01530c94b1e))
+
 ## [1.1.2](https://github.com/node-modules/oss-interface/compare/v1.1.1...v1.1.2) (2023-06-21)
 
 
