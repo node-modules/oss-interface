@@ -45,8 +45,8 @@ export interface NormalSuccessResponse {
  * @see x-oss-meta-* in https://www.alibabacloud.com/help/en/doc-detail/31978.html for AlibabaCloud user
  */
 export interface UserMeta extends Record<string, string | number> {
-  uid: number;
-  pid: number;
+  // uid: number;
+  // pid: number;
 }
 
 export interface ObjectCallback {
