@@ -78,7 +78,7 @@ export interface ListObjectsQuery {
   /** only search current dir, not including subdir */
   delimiter?: string | undefined; // delimiter search scope e.g.
   /** max objects, default is 100, limit to 1000 */
-  'max-keys': string | number;
+  'max-keys'?: string | number;
   /** Specifies that the object names in the response are URL-encoded. */
   'encoding-type'?: 'url' | '';
 }
@@ -199,7 +199,7 @@ export interface IObjectSimple {
   /**
    * List objects in the bucket.
    */
-  list(query: ListObjectsQuery | null, options: RequestOptions): Promise<ListObjectResult>;
+  list(query?: ListObjectsQuery | null, options?: RequestOptions): Promise<ListObjectResult>;
 
   /**
    * Add an object to the bucket.
