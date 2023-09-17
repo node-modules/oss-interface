@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/node-modules/oss-interface/compare/v1.2.1...v1.2.2) (2023-09-17)
+
+
+### Bug Fixes
+
+* res headers maybe IncomingHttpHeaders ([#9](https://github.com/node-modules/oss-interface/issues/9)) ([80d27f7](https://github.com/node-modules/oss-interface/commit/80d27f725ede3ef15f061710ad9337f4e389f9fb))
+
 ## [1.2.1](https://github.com/node-modules/oss-interface/compare/v1.2.0...v1.2.1) (2023-09-17)
 
 
