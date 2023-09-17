@@ -1,5 +1,6 @@
+import { Writable, Readable } from 'node:stream';
+import { IncomingHttpHeaders } from 'node:http';
 import { expectType } from 'tsd';
-import { Writable, Readable } from 'stream';
 import {
   GetObjectOptions,
   IObjectSimple,
@@ -36,7 +37,7 @@ class SimpleClient implements IObjectSimple {
       status: 200,
       res: {
         status: 200,
-        headers: {},
+        headers: {} as IncomingHttpHeaders,
         size: 0,
         rt: 0,
       },
@@ -78,7 +79,8 @@ expectType<Promise<GetObjectResult>>(simpleClient.get('foo'));
 const result = await simpleClient.getStream('foo');
 expectType<Readable>(result.stream);
 expectType<number>(result.res.status);
-expectType<string>(result.res.headers.etag);
+expectType<string | undefined>(result.res.headers.etag);
+expectType<string | string[] | undefined>(result.res.headers['set-cookie']);
 
 let listResult = await simpleClient.list({ prefix: 'foo' });
 expectType<number>(listResult.objects.length);

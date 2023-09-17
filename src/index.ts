@@ -1,4 +1,5 @@
 import { Readable, Writable } from 'node:stream';
+import { IncomingHttpHeaders } from 'node:http';
 
 export type StorageType = 'Standard' | 'IA' | 'Archive';
 
@@ -33,7 +34,7 @@ export interface NormalSuccessResponse {
   /** response status */
   status: number;
   /** response headers */
-  headers: Record<string, string>;
+  headers: Record<string, string> | IncomingHttpHeaders;
   /** response size */
   size: number;
   /**  request total use time (ms) */
