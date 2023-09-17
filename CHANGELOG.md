@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/node-modules/oss-interface/compare/v1.1.3...v1.2.0) (2023-09-17)
+
+
+### Features
+
+* support cjs and esm both ([#7](https://github.com/node-modules/oss-interface/issues/7)) ([49a0e8a](https://github.com/node-modules/oss-interface/commit/49a0e8af72b921e68da5fe603768cb035acb25cc))
+
 ## [1.1.3](https://github.com/node-modules/oss-interface/compare/v1.1.2...v1.1.3) (2023-08-19)
 
 
