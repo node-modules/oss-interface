@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/node-modules/oss-interface/compare/v1.2.0...v1.2.1) (2023-09-17)
+
+
+### Bug Fixes
+
+* list query should be optional ([#8](https://github.com/node-modules/oss-interface/issues/8)) ([b0c2897](https://github.com/node-modules/oss-interface/commit/b0c2897b4724409318d02c612cd2d5ff5548391f))
+
 ## [1.2.0](https://github.com/node-modules/oss-interface/compare/v1.1.3...v1.2.0) (2023-09-17)
 
 
