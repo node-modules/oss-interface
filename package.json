@@ -28,7 +28,7 @@
   },
   "scripts": {
     "lint": "echo 'ignore'",
-    "test": "tsd -f index.test-d.ts -t dist/esm/index.d.ts",
+    "test": "tsd -f index.test-d.ts -t dist/commonjs/index.d.ts",
     "ci": "npm run prepublishOnly && npm test",
     "contributor": "git-contributor",
     "prepublishOnly": "tshy && tshy-after"
