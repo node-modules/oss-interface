@@ -16,7 +16,7 @@ import {
   GetStreamResult,
   CopyObjectOptions,
   CopyAndPutMetaResult, SignatureUrlOptions,
-} from '.';
+} from './src/index.js';
 
 const getObjectOptions = {} as GetObjectOptions;
 expectType<string | undefined>(getObjectOptions.process);

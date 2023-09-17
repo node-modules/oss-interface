@@ -1,4 +1,4 @@
-import { Readable, Writable } from 'stream';
+import { Readable, Writable } from 'node:stream';
 
 export type StorageType = 'Standard' | 'IA' | 'Archive';
 
