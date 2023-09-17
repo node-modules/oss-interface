@@ -22,7 +22,7 @@ const getObjectOptions = {} as GetObjectOptions;
 expectType<string | undefined>(getObjectOptions.process);
 
 class SimpleClient implements IObjectSimple {
-  async list(query: ListObjectsQuery | null, options: RequestOptions): Promise<ListObjectResult> {
+  async list(query?: ListObjectsQuery | null, options?: RequestOptions): Promise<ListObjectResult> {
     console.log(query, options);
     return {} as any;
   }
@@ -79,3 +79,12 @@ const result = await simpleClient.getStream('foo');
 expectType<Readable>(result.stream);
 expectType<number>(result.res.status);
 expectType<string>(result.res.headers.etag);
+
+let listResult = await simpleClient.list({ prefix: 'foo' });
+expectType<number>(listResult.objects.length);
+listResult = await simpleClient.list();
+expectType<number>(listResult.objects.length);
+listResult = await simpleClient.list({});
+expectType<number>(listResult.objects.length);
+listResult = await simpleClient.list(null);
+expectType<number>(listResult.objects.length);
