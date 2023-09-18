@@ -34,7 +34,7 @@ export interface NormalSuccessResponse {
   /** response status */
   status: number;
   /** response headers */
-  headers: Record<string, string> | IncomingHttpHeaders;
+  headers: IncomingHttpHeaders;
   /** response size */
   size: number;
   /**  request total use time (ms) */
@@ -54,14 +54,20 @@ export interface ObjectCallback {
   /** After a file is uploaded successfully, the OSS sends a callback request to this URL. */
   url: string;
   /** The host header value for initiating callback requests. */
-  host?: string | undefined;
-  /** The value of the request body when a callback is initiated, for example, key=$(key)&etag=$(etag)&my_var=$(x:my_var). */
+  host?: string;
+  /**
+   * The value of the request body when a callback is initiated
+   * for example, key=$(key)&etag=$(etag)&my_var=$(x:my_var)
+   */
   body: string;
-  /** The Content-Type of the callback requests initiatiated, It supports application/x-www-form-urlencoded and application/json, and the former is the default value. */
-  contentType?: string | undefined;
-  customValue?: object | undefined;
+  /**
+   * The Content-Type of the callback requests initiated
+   * It supports application/x-www-form-urlencoded and application/json, and the former is the default value
+   */
+  contentType?: string;
+  customValue?: Record<string, any>;
   /** extra headers, detail see RFC 2616 */
-  headers?: object | undefined;
+  headers?: IncomingHttpHeaders;
 }
 
 export interface ModifyData {
@@ -73,11 +79,11 @@ export interface ModifyData {
 
 export interface ListObjectsQuery {
   /** search object using prefix key */
-  prefix?: string | undefined;
+  prefix?: string;
   /** search start from marker, including marker key */
-  marker?: string | undefined;
+  marker?: string;
   /** only search current dir, not including subdir */
-  delimiter?: string | undefined; // delimiter search scope e.g.
+  delimiter?: string; // delimiter search scope e.g.
   /** max objects, default is 100, limit to 1000 */
   'max-keys'?: string | number;
   /** Specifies that the object names in the response are URL-encoded. */
@@ -92,21 +98,20 @@ export interface ListObjectResult {
   res: NormalSuccessResponse;
 }
 
-export interface PutObjectOptions {
-  /** the operation timeout */
-  timeout?: number | undefined;
+export interface PutObjectOptions extends RequestOptions {
   /** custom mime, will send with Content-Type entity header */
-  mime?: string | undefined;
+  mime?: string;
   /** user meta, will send with x-oss-meta- prefix string e.g.: { uid: 123, pid: 110 } */
-  meta?: UserMeta | undefined;
-  callback?: ObjectCallback | undefined;
-  headers?: object | undefined;
+  meta?: UserMeta;
+  callback?: ObjectCallback;
+  headers?: IncomingHttpHeaders;
 }
 
 export interface PutObjectResult {
   name: string;
   url: string;
-  data: object;
+  /** only exists with callback request */
+  data?: object;
   res: NormalSuccessResponse;
 }
 
@@ -119,9 +124,8 @@ export interface AppendObjectResult {
   nextAppendPosition: string;
 }
 
-export interface HeadObjectOptions {
-  timeout?: number | undefined;
-  headers?: object | undefined;
+export interface HeadObjectOptions extends RequestOptions {
+  headers?: IncomingHttpHeaders;
 }
 
 export interface HeadObjectResult {
@@ -131,11 +135,10 @@ export interface HeadObjectResult {
   res: NormalSuccessResponse;
 }
 
-export interface GetObjectOptions {
-  timeout?: number | undefined;
+export interface GetObjectOptions extends RequestOptions {
   /** The Content-Type of the callback requests initiatiated, It supports application/x-www-form-urlencoded and application/json, and the former is the default value. */
-  process?: string | undefined;
-  headers?: object | undefined;
+  process?: string;
+  headers?: IncomingHttpHeaders;
 }
 
 export interface GetObjectResult {
@@ -144,11 +147,10 @@ export interface GetObjectResult {
   res: NormalSuccessResponse;
 }
 
-export interface GetStreamOptions {
-  timeout?: number | undefined;
+export interface GetStreamOptions extends RequestOptions {
   /** The Content-Type of the callback requests initiatiated, It supports application/x-www-form-urlencoded and application/json, and the former is the default value. */
-  process?: string | undefined;
-  headers?: object | undefined;
+  process?: string;
+  headers?: IncomingHttpHeaders;
 }
 
 export interface GetStreamResult {
@@ -156,10 +158,9 @@ export interface GetStreamResult {
   res: NormalSuccessResponse;
 }
 
-export interface CopyObjectOptions {
-  timeout?: number | undefined;
-  meta?: UserMeta | undefined;
-  headers?: object | undefined;
+export interface CopyObjectOptions extends RequestOptions {
+  meta?: UserMeta;
+  headers?: IncomingHttpHeaders;
 }
 
 export interface CopyAndPutMetaResult {
@@ -167,31 +168,48 @@ export interface CopyAndPutMetaResult {
   res: NormalSuccessResponse;
 }
 
+export interface DeleteObjectOptions extends RequestOptions {
+  versionId?: string;
+}
+
+export interface DeleteObjectResult {
+  res: NormalSuccessResponse;
+  /** Compatible v1 delete object result fields */
+  /** response status */
+  status: number;
+  /** response headers */
+  headers: IncomingHttpHeaders;
+  /** response size */
+  size: number;
+  /**  request total use time (ms) */
+  rt: number;
+}
+
 export type HTTPMethods = 'GET' | 'POST' | 'DELETE' | 'PUT';
 
 export interface ResponseHeaderType {
-  'content-type'?: string | undefined;
-  'content-disposition'?: string | undefined;
-  'cache-control'?: string | undefined;
+  'content-type'?: string;
+  'content-disposition'?: string;
+  'cache-control'?: string;
 }
 
 export interface SignatureUrlOptions {
   /** after expires seconds, the url will become invalid, default is 1800 */
-  expires?: number | undefined;
+  expires?: number;
   /** the HTTP method, default is 'GET' */
-  method?: HTTPMethods | undefined;
+  method?: HTTPMethods;
   /** set the request content type */
-  'Content-Type'?: string | undefined;
+  'Content-Type'?: string;
   /**  image process params, will send with x-oss-process e.g.: {process: 'image/resize,w_200'} */
-  process?: string | undefined;
+  process?: string;
   /** traffic limit, range: 819200~838860800 */
-  trafficLimit?: number | undefined;
+  trafficLimit?: number;
   /** additional signature parameters in url */
-  subResource?: object | undefined;
+  subResource?: Record<string, string>;
   /** set the response headers for download */
-  response?: ResponseHeaderType | undefined;
+  response?: ResponseHeaderType;
   /** set the callback for the operation */
-  callback?: ObjectCallback | undefined;
+  callback?: ObjectCallback;
 }
 
 // Object Simple Interface
@@ -226,7 +244,7 @@ export interface IObjectSimple {
   /**
    * Delete an object from the bucket.
    */
-  delete(name: string, options?: RequestOptions): Promise<NormalSuccessResponse>;
+  delete(name: string, options?: DeleteObjectOptions): Promise<DeleteObjectResult>;
 
   /**
    * Copy an object from sourceName to name.

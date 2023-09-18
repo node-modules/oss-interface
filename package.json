@@ -28,6 +28,7 @@
   },
   "scripts": {
     "lint": "echo 'ignore'",
+    "pretest": "npm run prepublishOnly",
     "test": "npm run test:cjs && npm run test:esm",
     "test:cjs": "tsd -f index.test-d.ts -t dist/commonjs/index.d.ts",
     "test:esm": "tsd -f index.test-d.ts -t dist/esm/index.d.ts",

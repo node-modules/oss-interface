@@ -9,14 +9,13 @@ import {
   ListObjectResult,
   PutObjectOptions,
   PutObjectResult,
-  NormalSuccessResponse,
   HeadObjectOptions,
   HeadObjectResult,
   GetObjectResult,
   GetStreamOptions,
   GetStreamResult,
   CopyObjectOptions,
-  CopyAndPutMetaResult, SignatureUrlOptions,
+  CopyAndPutMetaResult, SignatureUrlOptions, DeleteObjectOptions, DeleteObjectResult,
 } from './src/index.js';
 
 const getObjectOptions = {} as GetObjectOptions;
@@ -55,7 +54,7 @@ class SimpleClient implements IObjectSimple {
     console.log(name, options);
     return {} as any;
   }
-  async delete(name: string, options?: RequestOptions): Promise<NormalSuccessResponse> {
+  async delete(name: string, options?: RequestOptions | DeleteObjectOptions): Promise<DeleteObjectResult> {
     console.log(name, options);
     return {} as any;
   }
@@ -80,7 +79,7 @@ const result = await simpleClient.getStream('foo');
 expectType<Readable>(result.stream);
 expectType<number>(result.res.status);
 expectType<string | undefined>(result.res.headers.etag);
-expectType<string | string[] | undefined>(result.res.headers['set-cookie']);
+expectType<string[] | undefined>(result.res.headers['set-cookie']);
 
 let listResult = await simpleClient.list({ prefix: 'foo' });
 expectType<number>(listResult.objects.length);
@@ -90,3 +89,7 @@ listResult = await simpleClient.list({});
 expectType<number>(listResult.objects.length);
 listResult = await simpleClient.list(null);
 expectType<number>(listResult.objects.length);
+
+const deleteResult = await simpleClient.delete('foo', { versionId: 'foo' });
+expectType<number>(deleteResult.status);
+expectType<number>(deleteResult.res.status);
