@@ -1,5 +1,4 @@
 import { Writable, Readable } from 'node:stream';
-import { IncomingHttpHeaders } from 'node:http';
 import { expectType } from 'tsd';
 import {
   GetObjectOptions,
@@ -15,7 +14,11 @@ import {
   GetStreamOptions,
   GetStreamResult,
   CopyObjectOptions,
-  CopyAndPutMetaResult, SignatureUrlOptions, DeleteObjectOptions, DeleteObjectResult,
+  CopyAndPutMetaResult,
+  SignatureUrlOptions,
+  DeleteObjectOptions,
+  DeleteObjectResult,
+  IncomingHttpHeaders,
 } from './src/index.js';
 
 const getObjectOptions = {} as GetObjectOptions;
@@ -79,7 +82,7 @@ const result = await simpleClient.getStream('foo');
 expectType<Readable>(result.stream);
 expectType<number>(result.res.status);
 expectType<string | undefined>(result.res.headers.etag);
-expectType<string[] | undefined>(result.res.headers['set-cookie']);
+expectType<string | string[] | undefined>(result.res.headers['set-cookie']);
 
 let listResult = await simpleClient.list({ prefix: 'foo' });
 expectType<number>(listResult.objects.length);
@@ -93,3 +96,21 @@ expectType<number>(listResult.objects.length);
 const deleteResult = await simpleClient.delete('foo', { versionId: 'foo' });
 expectType<number>(deleteResult.status);
 expectType<number>(deleteResult.res.status);
+
+expectType<string>(await simpleClient.asyncSignatureUrl('foo', {
+  'x-oss-foo': 'bar',
+  "Content-MD5": 'md5',
+  'content-md5': 'md5',
+  'content-type': 'text/plain',
+  'Content-Type': 'text/plain',
+  'x-oss-meta-foo': 'bar',
+  'x-oss-server-side-encryption': 'AES256',
+  'x-oss-server-side-encryption-key-id': 'foo',
+  'x-oss-server-side-encryption-customer-algorithm': 'AES256',
+  'x-oss-server-side-encryption-customer-key': 'foo',
+  'x-oss-server-side-encryption-customer-key-md5': 'foo',
+  callback: {
+    url: 'http://foo.bar',
+    body: 'foo',
+  },
+}));

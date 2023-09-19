@@ -1,5 +1,11 @@
-import { Readable, Writable } from 'node:stream';
-import { IncomingHttpHeaders } from 'node:http';
+import type { Readable, Writable } from 'node:stream';
+import type { IncomingHttpHeaders as HTTPIncomingHttpHeaders } from 'node:http';
+import type { Except } from 'type-fest';
+
+// https://github.com/node-modules/urllib/pull/471
+export interface IncomingHttpHeaders extends Except<HTTPIncomingHttpHeaders, 'set-cookie'> {
+  'set-cookie'?: string | string[];
+}
 
 export type StorageType = 'Standard' | 'IA' | 'Archive';
 
@@ -136,9 +142,20 @@ export interface HeadObjectResult {
 }
 
 export interface GetObjectOptions extends RequestOptions {
-  /** The Content-Type of the callback requests initiatiated, It supports application/x-www-form-urlencoded and application/json, and the former is the default value. */
+  /**
+   * The Content-Type of the callback requests initiatiated
+   * It supports application/x-www-form-urlencoded and application/json, and the former is the default value
+   */
   process?: string;
+  versionId?: string;
   headers?: IncomingHttpHeaders;
+  /** additional signature parameters in url */
+  subResource?: Record<string, string>;
+  /**
+   * @alias subResource
+   * @deprecated
+   */
+  subres?: Record<string, string>;
 }
 
 export interface GetObjectResult {
@@ -198,8 +215,6 @@ export interface SignatureUrlOptions {
   expires?: number;
   /** the HTTP method, default is 'GET' */
   method?: HTTPMethods;
-  /** set the request content type */
-  'Content-Type'?: string;
   /**  image process params, will send with x-oss-process e.g.: {process: 'image/resize,w_200'} */
   process?: string;
   /** traffic limit, range: 819200~838860800 */
@@ -210,6 +225,24 @@ export interface SignatureUrlOptions {
   response?: ResponseHeaderType;
   /** set the callback for the operation */
   callback?: ObjectCallback;
+  /**
+   * set the request content type
+   * @deprecated please use `content-type` instead
+   */
+  'Content-Type'?: string;
+  /**
+   * set the request content type
+   */
+  'content-type'?: string;
+  /**
+   * set the request content md5
+   * @deprecated please use `content-md5` instead
+   */
+  'Content-MD5'?: string;
+  /** set the request content md5 */
+  'content-md5'?: string;
+  /** set other custom x-oss-{key} */
+  [key: string]: any;
 }
 
 // Object Simple Interface
