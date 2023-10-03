@@ -132,6 +132,14 @@ export interface AppendObjectResult {
 
 export interface HeadObjectOptions extends RequestOptions {
   headers?: IncomingHttpHeaders;
+  versionId?: string;
+  /** additional signature parameters in url */
+  subResource?: Record<string, string>;
+  /**
+   * @alias subResource
+   * @deprecated
+   */
+  subres?: Record<string, string>;
 }
 
 export interface HeadObjectResult {
@@ -164,11 +172,7 @@ export interface GetObjectResult {
   res: NormalSuccessResponse;
 }
 
-export interface GetStreamOptions extends RequestOptions {
-  /** The Content-Type of the callback requests initiatiated, It supports application/x-www-form-urlencoded and application/json, and the former is the default value. */
-  process?: string;
-  headers?: IncomingHttpHeaders;
-}
+export interface GetStreamOptions extends GetObjectOptions {}
 
 export interface GetStreamResult {
   stream: Readable;
@@ -176,12 +180,13 @@ export interface GetStreamResult {
 }
 
 export interface CopyObjectOptions extends RequestOptions {
+  versionId?: string;
   meta?: UserMeta;
   headers?: IncomingHttpHeaders;
 }
 
 export interface CopyAndPutMetaResult {
-  data: ModifyData;
+  data: ModifyData | null;
   res: NormalSuccessResponse;
 }
 
@@ -235,10 +240,13 @@ export interface SignatureUrlOptions {
    */
   'content-type'?: string;
   /**
-   * set the request content md5
    * @deprecated please use `content-md5` instead
    */
   'Content-MD5'?: string;
+  /**
+   * @deprecated please use `content-md5` instead
+   */
+  'Content-Md5'?: string;
   /** set the request content md5 */
   'content-md5'?: string;
   /** set other custom x-oss-{key} */
