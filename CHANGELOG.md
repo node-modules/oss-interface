@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/node-modules/oss-interface/compare/v1.2.2...v1.3.0) (2023-10-05)
+
+
+### Features
+
+* improve delete options ([#10](https://github.com/node-modules/oss-interface/issues/10)) ([d20b0fe](https://github.com/node-modules/oss-interface/commit/d20b0fe68d2ec6511365a72ae5dc8d18132f3fa8))
+
 ## [1.2.2](https://github.com/node-modules/oss-interface/compare/v1.2.1...v1.2.2) (2023-09-17)
 
 
