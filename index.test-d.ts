@@ -1,5 +1,4 @@
 import { Writable, Readable } from 'node:stream';
-import { IncomingHttpHeaders } from 'node:http';
 import { expectType } from 'tsd';
 import {
   GetObjectOptions,
@@ -9,14 +8,17 @@ import {
   ListObjectResult,
   PutObjectOptions,
   PutObjectResult,
-  NormalSuccessResponse,
   HeadObjectOptions,
   HeadObjectResult,
   GetObjectResult,
   GetStreamOptions,
   GetStreamResult,
   CopyObjectOptions,
-  CopyAndPutMetaResult, SignatureUrlOptions,
+  CopyAndPutMetaResult,
+  SignatureUrlOptions,
+  DeleteObjectOptions,
+  DeleteObjectResult,
+  IncomingHttpHeaders,
 } from './src/index.js';
 
 const getObjectOptions = {} as GetObjectOptions;
@@ -55,7 +57,7 @@ class SimpleClient implements IObjectSimple {
     console.log(name, options);
     return {} as any;
   }
-  async delete(name: string, options?: RequestOptions): Promise<NormalSuccessResponse> {
+  async delete(name: string, options?: RequestOptions | DeleteObjectOptions): Promise<DeleteObjectResult> {
     console.log(name, options);
     return {} as any;
   }
@@ -90,3 +92,25 @@ listResult = await simpleClient.list({});
 expectType<number>(listResult.objects.length);
 listResult = await simpleClient.list(null);
 expectType<number>(listResult.objects.length);
+
+const deleteResult = await simpleClient.delete('foo', { versionId: 'foo' });
+expectType<number>(deleteResult.status);
+expectType<number>(deleteResult.res.status);
+
+expectType<string>(await simpleClient.asyncSignatureUrl('foo', {
+  'x-oss-foo': 'bar',
+  "Content-MD5": 'md5',
+  'content-md5': 'md5',
+  'content-type': 'text/plain',
+  'Content-Type': 'text/plain',
+  'x-oss-meta-foo': 'bar',
+  'x-oss-server-side-encryption': 'AES256',
+  'x-oss-server-side-encryption-key-id': 'foo',
+  'x-oss-server-side-encryption-customer-algorithm': 'AES256',
+  'x-oss-server-side-encryption-customer-key': 'foo',
+  'x-oss-server-side-encryption-customer-key-md5': 'foo',
+  callback: {
+    url: 'http://foo.bar',
+    body: 'foo',
+  },
+}));

@@ -28,6 +28,7 @@
   },
   "scripts": {
     "lint": "echo 'ignore'",
+    "pretest": "npm run prepublishOnly",
     "test": "npm run test:cjs && npm run test:esm",
     "test:cjs": "tsd -f index.test-d.ts -t dist/commonjs/index.d.ts",
     "test:esm": "tsd -f index.test-d.ts -t dist/esm/index.d.ts",
@@ -54,6 +55,9 @@
     "tsd": "^0.29.0",
     "tshy": "^1.0.0",
     "tshy-after": "^1.0.0"
+  },
+  "dependencies": {
+    "type-fest": "^4.3.1"
   },
   "types": "./dist/commonjs/index.d.ts"
 }
