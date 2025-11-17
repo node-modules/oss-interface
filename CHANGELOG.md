@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.0 (2025-11-17)
+
+* feat: add uploadPart method type definition (#12) ([666d9f6](https://github.com/node-modules/oss-interface/commit/666d9f6)), closes [#12](https://github.com/node-modules/oss-interface/issues/12)
+
 ## 1.4.0 (2025-11-17)
 
 * chore: use trust publish ([a69d91e](https://github.com/node-modules/oss-interface/commit/a69d91e))
