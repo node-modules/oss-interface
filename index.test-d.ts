@@ -40,6 +40,8 @@ import {
   UploadPartCopySourceData,
   UploadPartCopyOptions,
   UploadPartCopyResult,
+  UploadPartOptions,
+  UploadPartResult,
   PartInfo,
   SourceData,
   IncomingHttpHeaders,
@@ -151,6 +153,11 @@ class SimpleClient implements IObjectSimple {
 
   async uploadPartCopy(name: string, uploadId: string, partNo: number, range: string, sourceData: UploadPartCopySourceData, options?: UploadPartCopyOptions): Promise<UploadPartCopyResult> {
     console.log(name, uploadId, partNo, range, sourceData, options);
+    return {} as any;
+  }
+
+  async uploadPart(name: string, uploadId: string, partNo: number, file: any, start: number, end: number, options?: UploadPartOptions): Promise<UploadPartResult> {
+    console.log(name, uploadId, partNo, file, start, end, options);
     return {} as any;
   }
 
@@ -476,3 +483,62 @@ const uploadPartCopyResult4 = await simpleClient.uploadPartCopy(
   partCopySourceData
 );
 expectType<string>(uploadPartCopyResult4.etag);
+
+// Test uploadPart basic usage
+const uploadPartResult1 = await simpleClient.uploadPart(
+  'large-file.bin',
+  'uploadId123',
+  1,
+  '/path/to/file.bin',
+  0,
+  1048576
+);
+expectType<string>(uploadPartResult1.name);
+expectType<string>(uploadPartResult1.etag);
+expectType<number>(uploadPartResult1.res.status);
+
+// Test uploadPart with options
+const uploadPartResult2 = await simpleClient.uploadPart(
+  'large-file.bin',
+  'uploadId123',
+  2,
+  '/path/to/file.bin',
+  1048576,
+  2097152,
+  {
+    timeout: 60000,
+    disabledMD5: false
+  }
+);
+expectType<string>(uploadPartResult2.etag);
+
+// Test uploadPart with File object (browser environment)
+const fileObject = new File(['content'], 'test.txt');
+const uploadPartResult3 = await simpleClient.uploadPart(
+  'upload.txt',
+  'uploadId456',
+  3,
+  fileObject,
+  0,
+  100000,
+  {
+    headers: {
+      'x-oss-server-side-encryption': 'AES256'
+    },
+    mime: 'text/plain'
+  }
+);
+expectType<string>(uploadPartResult3.name);
+expectType<string>(uploadPartResult3.etag);
+expectType<number>(uploadPartResult3.res.status);
+
+// Test uploadPart with different byte ranges
+const uploadPartResult4 = await simpleClient.uploadPart(
+  'video.mp4',
+  'uploadId789',
+  5,
+  '/path/to/video.mp4',
+  5242880,
+  10485760
+);
+expectType<string>(uploadPartResult4.etag);
