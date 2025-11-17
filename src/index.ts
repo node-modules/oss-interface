@@ -574,7 +574,7 @@ export interface IObjectSimple {
   /**
    * Upload a part in a multipart upload transaction.
    */
-  uploadPart(name: string, uploadId: string, partNo: number, file: any, start: number, end: number, options?: UploadPartOptions): Promise<UploadPartResult>;
+  uploadPart(name: string, uploadId: string, partNo: number, file: string | Buffer | Readable, start: number, end: number, options?: UploadPartOptions): Promise<UploadPartResult>;
 
   /**
    * Signature a url for the object.
