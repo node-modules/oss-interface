@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.0 (2025-11-17)
+
+* chore: use trust publish ([a69d91e](https://github.com/node-modules/oss-interface/commit/a69d91e))
+* feat: add type definitions for additional OSS object operations (#11) ([823562e](https://github.com/node-modules/oss-interface/commit/823562e)), closes [#11](https://github.com/node-modules/oss-interface/issues/11)
+
 ## [1.3.0](https://github.com/node-modules/oss-interface/compare/v1.2.2...v1.3.0) (2023-10-05)
 
 
