@@ -410,6 +410,20 @@ export interface UploadPartCopyResult {
   res: NormalSuccessResponse;
 }
 
+export interface UploadPartOptions extends RequestOptions {
+  headers?: IncomingHttpHeaders;
+  mime?: string;
+  /** disable MD5 check */
+  disabledMD5?: boolean;
+}
+
+export interface UploadPartResult {
+  name: string;
+  /** part etag */
+  etag: string;
+  res: NormalSuccessResponse;
+}
+
 export type HTTPMethods = 'GET' | 'POST' | 'DELETE' | 'PUT';
 
 export interface ResponseHeaderType {
@@ -556,6 +570,11 @@ export interface IObjectSimple {
    * Upload a part copy in a multipart from the source bucket/object.
    */
   uploadPartCopy(name: string, uploadId: string, partNo: number, range: string, sourceData: UploadPartCopySourceData, options?: UploadPartCopyOptions): Promise<UploadPartCopyResult>;
+
+  /**
+   * Upload a part in a multipart upload transaction.
+   */
+  uploadPart(name: string, uploadId: string, partNo: number, file: string | Buffer | Readable, start: number, end: number, options?: UploadPartOptions): Promise<UploadPartResult>;
 
   /**
    * Signature a url for the object.
