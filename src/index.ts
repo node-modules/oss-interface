@@ -121,6 +121,11 @@ export interface PutObjectResult {
   res: NormalSuccessResponse;
 }
 
+export interface AppendObjectOptions extends PutObjectOptions {
+  /** append position, default is '0' */
+  position?: string | number;
+}
+
 export interface AppendObjectResult {
   name: string;
   /** the url of oss */
@@ -128,6 +133,8 @@ export interface AppendObjectResult {
   res: NormalSuccessResponse;
   /** the next position */
   nextAppendPosition: string;
+  /** only exists with callback request */
+  data?: object;
 }
 
 export interface HeadObjectOptions extends RequestOptions {
@@ -207,6 +214,202 @@ export interface DeleteObjectResult {
   rt: number;
 }
 
+export interface DeleteMultiOptions extends RequestOptions {
+  /** quiet mode, if true, return empty deleted list */
+  quiet?: boolean;
+}
+
+export interface DeletedObject {
+  Key: string;
+  VersionId?: string;
+  DeleteMarker?: boolean;
+  DeleteMarkerVersionId?: string;
+}
+
+export interface DeleteMultiResult {
+  res: NormalSuccessResponse;
+  /** deleted objects list */
+  deleted: DeletedObject[];
+}
+
+export interface ObjectTaggingOptions extends RequestOptions {
+  versionId?: string;
+}
+
+export interface GetObjectTaggingResult {
+  /** response status */
+  status: number;
+  res: NormalSuccessResponse;
+  /** object tags, key-value pairs */
+  tag: Record<string, string>;
+}
+
+export interface PutObjectTaggingResult {
+  /** response status */
+  status: number;
+  res: NormalSuccessResponse;
+}
+
+export interface DeleteObjectTaggingResult {
+  /** response status */
+  status: number;
+  res: NormalSuccessResponse;
+}
+
+export interface InitMultipartUploadOptions extends RequestOptions {
+  /** custom mime, will send with Content-Type entity header */
+  mime?: string;
+  /** user meta, will send with x-oss-meta- prefix string */
+  meta?: UserMeta;
+  headers?: IncomingHttpHeaders;
+}
+
+export interface InitMultipartUploadResult {
+  res: NormalSuccessResponse;
+  bucket: string;
+  name: string;
+  uploadId: string;
+}
+
+export interface PartInfo {
+  /** part number */
+  number: number;
+  /** part etag */
+  etag: string;
+}
+
+export interface CompleteMultipartUploadOptions extends RequestOptions {
+  callback?: ObjectCallback;
+  headers?: IncomingHttpHeaders;
+  /** progress callback */
+  progress?: (percent: number, checkpoint: any, res: NormalSuccessResponse) => void | Promise<void>;
+}
+
+export interface CompleteMultipartUploadResult {
+  res: NormalSuccessResponse;
+  bucket: string;
+  name: string;
+  etag: string;
+  /** callback response data */
+  data?: object;
+}
+
+export interface MultipartUploadOptions extends RequestOptions {
+  /** part size, default is 1MB, minimum is 100KB */
+  partSize?: number;
+  /** custom mime */
+  mime?: string;
+  /** user meta */
+  meta?: UserMeta;
+  callback?: ObjectCallback;
+  headers?: IncomingHttpHeaders;
+  /** progress callback */
+  progress?: (percent: number, checkpoint?: any, res?: NormalSuccessResponse) => void | Promise<void>;
+  /** parallel upload parts, default is 5 */
+  parallel?: number;
+  /** checkpoint for resumable upload */
+  checkpoint?: any;
+}
+
+export interface MultipartUploadResult {
+  res: NormalSuccessResponse;
+  bucket: string;
+  name: string;
+  etag: string;
+  /** callback response data */
+  data?: object;
+}
+
+export interface SourceData {
+  /** source object name */
+  sourceKey: string;
+  /** source bucket name */
+  sourceBucketName: string;
+  /** data copy start byte offset */
+  startOffset?: number;
+  /** data copy end byte offset */
+  endOffset?: number;
+}
+
+export interface MultipartUploadCopyOptions extends RequestOptions {
+  /** part size for copy */
+  partSize?: number;
+  /** version id of source object */
+  versionId?: string;
+  /** custom headers for copy */
+  copyheaders?: IncomingHttpHeaders;
+  headers?: IncomingHttpHeaders;
+  /** progress callback */
+  progress?: (percent: number, checkpoint: any, res: NormalSuccessResponse) => void | Promise<void>;
+  /** parallel copy parts, default is 5 */
+  parallel?: number;
+  /** checkpoint for resumable copy */
+  checkpoint?: any;
+}
+
+export interface AbortMultipartUploadOptions extends RequestOptions {}
+
+export interface AbortMultipartUploadResult {
+  res: NormalSuccessResponse;
+}
+
+export interface ListUploadsQuery {
+  /** search object using prefix key */
+  prefix?: string;
+  /** search start from marker, including marker key */
+  'key-marker'?: string;
+  /** uploadId marker */
+  'upload-id-marker'?: string;
+  /** max uploads, default is 1000 */
+  'max-uploads'?: string | number;
+  /** Specifies that the object names in the response are URL-encoded. */
+  'encoding-type'?: 'url' | '';
+}
+
+export interface Upload {
+  /** object name */
+  name: string;
+  /** upload id */
+  uploadId: string;
+  /** upload initiated time */
+  initiated: string;
+}
+
+export interface ListUploadsResult {
+  res: NormalSuccessResponse;
+  /** upload list */
+  uploads: Upload[];
+  /** bucket name */
+  bucket: string;
+  /** next key marker for pagination */
+  nextKeyMarker: string;
+  /** next upload id marker for pagination */
+  nextUploadIdMarker: string;
+  /** whether the list is truncated */
+  isTruncated: boolean;
+}
+
+export interface UploadPartCopySourceData {
+  /** source object name */
+  sourceKey: string;
+  /** source bucket name */
+  sourceBucketName: string;
+}
+
+export interface UploadPartCopyOptions extends RequestOptions {
+  /** version id of source object */
+  versionId?: string;
+  headers?: IncomingHttpHeaders;
+  mime?: string;
+}
+
+export interface UploadPartCopyResult {
+  name: string;
+  /** part etag */
+  etag: string;
+  res: NormalSuccessResponse;
+}
+
 export type HTTPMethods = 'GET' | 'POST' | 'DELETE' | 'PUT';
 
 export interface ResponseHeaderType {
@@ -267,6 +470,11 @@ export interface IObjectSimple {
   put(name: string, file: string | Buffer | Readable, options?: PutObjectOptions): Promise<PutObjectResult>;
 
   /**
+   * Append content to an appendable object.
+   */
+  append(name: string, file: string | Buffer | Readable, options?: AppendObjectOptions): Promise<AppendObjectResult>;
+
+  /**
    * Head an object and get the meta info.
    */
   head(name: string, options?: HeadObjectOptions): Promise<HeadObjectResult>;
@@ -288,10 +496,66 @@ export interface IObjectSimple {
   delete(name: string, options?: DeleteObjectOptions): Promise<DeleteObjectResult>;
 
   /**
+   * Delete multiple objects from the bucket.
+   */
+  deleteMulti(names: string[], options?: DeleteMultiOptions): Promise<DeleteMultiResult>;
+  deleteMulti(names: Array<{ key: string; versionId?: string }>, options?: DeleteMultiOptions): Promise<DeleteMultiResult>;
+
+  /**
    * Copy an object from sourceName to name.
    */
   copy(name: string, sourceName: string, options?: CopyObjectOptions): Promise<CopyAndPutMetaResult>;
   copy(name: string, sourceName: string, sourceBucket: string, options?: CopyObjectOptions): Promise<CopyAndPutMetaResult>;
+
+  /**
+   * Get object tagging.
+   */
+  getObjectTagging(name: string, options?: ObjectTaggingOptions): Promise<GetObjectTaggingResult>;
+
+  /**
+   * Put object tagging.
+   */
+  putObjectTagging(name: string, tag: Record<string, string>, options?: ObjectTaggingOptions): Promise<PutObjectTaggingResult>;
+
+  /**
+   * Delete object tagging.
+   */
+  deleteObjectTagging(name: string, options?: ObjectTaggingOptions): Promise<DeleteObjectTaggingResult>;
+
+  /**
+   * Initiate a multipart upload transaction.
+   */
+  initMultipartUpload(name: string, options?: InitMultipartUploadOptions): Promise<InitMultipartUploadResult>;
+
+  /**
+   * Complete a multipart upload transaction.
+   */
+  completeMultipartUpload(name: string, uploadId: string, parts: PartInfo[], options?: CompleteMultipartUploadOptions): Promise<CompleteMultipartUploadResult>;
+
+  /**
+   * Upload a file to OSS using multipart uploads.
+   */
+  multipartUpload(name: string, file: string | Buffer | Readable, options?: MultipartUploadOptions): Promise<MultipartUploadResult>;
+
+  /**
+   * Multipart copy object from source bucket/object.
+   */
+  multipartUploadCopy(name: string, sourceData: SourceData, options?: MultipartUploadCopyOptions): Promise<CompleteMultipartUploadResult>;
+
+  /**
+   * Abort a multipart upload transaction.
+   */
+  abortMultipartUpload(name: string, uploadId: string, options?: AbortMultipartUploadOptions): Promise<AbortMultipartUploadResult>;
+
+  /**
+   * List the on-going multipart uploads.
+   */
+  listUploads(query?: ListUploadsQuery, options?: RequestOptions): Promise<ListUploadsResult>;
+
+  /**
+   * Upload a part copy in a multipart from the source bucket/object.
+   */
+  uploadPartCopy(name: string, uploadId: string, partNo: number, range: string, sourceData: UploadPartCopySourceData, options?: UploadPartCopyOptions): Promise<UploadPartCopyResult>;
 
   /**
    * Signature a url for the object.
