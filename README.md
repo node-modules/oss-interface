@@ -20,3 +20,9 @@ See [index.test-d.ts](index.test-d.ts)
 ## License
 
 [MIT](LICENSE)
+
+## Contributors
+
+[![Contributors](https://contrib.rocks/image?repo=node-modules/oss-interface)](https://github.com/node-modules/oss-interface/graphs/contributors)
+
+Made with [contributors-img](https://contrib.rocks).
